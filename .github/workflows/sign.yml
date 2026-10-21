@@ -119,6 +119,17 @@ jobs:
             echo "index unchanged"
           else
             git commit -m "chore: sign index"
+            # Another push may land between checkout and here (a manual sync,
+            # or a second dispatch). Rebase so the signed index is applied on
+            # top of the current tip instead of failing with "fetch first".
+            for attempt in 1 2 3; do
+              if git push; then
+                break
+              fi
+              echo "push rejected (attempt $attempt); rebasing on origin/main"
+              git pull --rebase --autostash origin main
+              sleep $((attempt * 3))
+            done
             git push
           fi
 
