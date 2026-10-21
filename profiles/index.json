@@ -1,0 +1,84 @@
+{
+  "schema": 1,
+  "generated_at": "2026-10-21T08:53:15.981272981Z",
+  "key_id": "yuki-profiles-2026",
+  "profiles": [
+    {
+      "id": "aliyun-ecs-security-group",
+      "vendor": "aliyun",
+      "name": "阿里云 ECS 安全组",
+      "version": "1.0.0",
+      "path": "aliyun-ecs-security-group.yaml",
+      "sha256": "c69948bb2fd0bfa9d9c648abc42f2ec8de1181c99e9707faf61a41f65a644b8d",
+      "docs": [
+        "https://help.aliyun.com/zh/ecs/developer-reference/api-ecs-2014-05-26-authorizesecuritygroup",
+        "https://help.aliyun.com/zh/ecs/developer-reference/api-ecs-2014-05-26-revokesecuritygroup"
+      ],
+      "min_engine": "0.2.0"
+    },
+    {
+      "id": "aws-ec2-security-group",
+      "vendor": "aws",
+      "name": "AWS EC2 安全组",
+      "version": "1.0.0",
+      "path": "aws-ec2-security-group.yaml",
+      "sha256": "3cc2df8f71856602764d7c5c9a73cec7a5fe01138d0aa1278d2d024077f077fa",
+      "docs": [
+        "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_AuthorizeSecurityGroupIngress.html",
+        "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_RevokeSecurityGroupIngress.html"
+      ],
+      "min_engine": "0.2.0"
+    },
+    {
+      "id": "azure-nsg",
+      "vendor": "azure",
+      "name": "Azure 网络安全组",
+      "version": "1.0.0",
+      "path": "azure-nsg.yaml",
+      "sha256": "11dccce678e5b1f13dce31466885136c00a6ce71779d182991b6a9c73bdc2590",
+      "docs": [
+        "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/security-rules/create-or-update"
+      ],
+      "min_engine": "0.2.0"
+    },
+    {
+      "id": "gcp-firewall",
+      "vendor": "gcp",
+      "name": "Google Cloud VPC 防火墙",
+      "version": "1.0.0",
+      "path": "gcp-firewall.yaml",
+      "sha256": "5ce8323f6b3073fde864a5ac1617ee8413c37a54975589665e25cb66e522e5cd",
+      "docs": [
+        "https://cloud.google.com/compute/docs/reference/rest/v1/firewalls/insert"
+      ],
+      "min_engine": "0.2.0"
+    },
+    {
+      "id": "huawei-vpc-security-group",
+      "vendor": "huawei",
+      "name": "华为云 VPC 安全组",
+      "version": "1.0.0",
+      "path": "huawei-vpc-security-group.yaml",
+      "sha256": "97cb5f8b00253be458b927a4e79f4ee121f23d1e98785b955c8433554824fcbe",
+      "docs": [
+        "https://support.huaweicloud.com/api-vpc/vpc_api_0009.html",
+        "https://support.huaweicloud.com/api-vpc/vpc_api_0011.html"
+      ],
+      "min_engine": "0.2.0"
+    },
+    {
+      "id": "tencent-vpc-security-group",
+      "vendor": "tencent",
+      "name": "腾讯云 VPC 安全组",
+      "version": "1.0.0",
+      "path": "tencent-vpc-security-group.yaml",
+      "sha256": "b8873641fa238ef1fdef5e43ecb645debd78f10f88b676aa8ff55e3af95379e8",
+      "docs": [
+        "https://cloud.tencent.com/document/api/215/15807",
+        "https://cloud.tencent.com/document/api/215/15809",
+        "https://cloud.tencent.com/document/api/215/15804"
+      ],
+      "min_engine": "0.2.0"
+    }
+  ]
+}
