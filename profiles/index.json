@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generated_at": "2026-10-21T08:55:46.617144194Z",
+  "generated_at": "2026-10-21T13:42:40.571209712Z",
   "key_id": "yuki-profiles-2026",
   "profiles": [
     {
@@ -33,9 +33,9 @@
       "id": "azure-nsg",
       "vendor": "azure",
       "name": "Azure 网络安全组",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "path": "azure-nsg.yaml",
-      "sha256": "11dccce678e5b1f13dce31466885136c00a6ce71779d182991b6a9c73bdc2590",
+      "sha256": "b304b963f56b64f59d648e906d749eb73670b3fea1044786cf2b275c313dd9bf",
       "docs": [
         "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/security-rules/create-or-update"
       ],
