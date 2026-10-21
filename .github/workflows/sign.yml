@@ -174,11 +174,14 @@ jobs:
       - name: Compare jsDelivr, raw and R2
         run: |
           set -euo pipefail
+          # Origin mirrors must match exactly; the jsDelivr CDN is allowed to
+          # lag, because its cache lifetime is measured in hours and cannot be
+          # purged from CI. It is still compared and reported as a warning.
           urls=(
-            "https://cdn.jsdelivr.net/gh/yuuuuukiu/yukitunnel-profiles@main/profiles/index.json"
             "https://raw.githubusercontent.com/yuuuuukiu/yukitunnel-profiles/main/profiles/index.json"
             "https://tunnel.yuuuuukiu.top/profiles/index.json"
           )
+          cdn_url="https://cdn.jsdelivr.net/gh/yuuuuukiu/yukitunnel-profiles@main/profiles/index.json"
           # jsDelivr caches for minutes and R2 for a few hundred seconds, so a
           # freshly pushed index can legitimately lag. Retry before failing:
           # the point is to catch a mirror that is *permanently* stale, not to
@@ -187,7 +190,10 @@ jobs:
           for attempt in 1 2 3 4 5 6; do
             sums=()
             for u in "${urls[@]}"; do
-              if body=$(curl -fsSL --max-time 20 "$u"); then
+              # The R2 custom domain sits behind Cloudflare, which challenges
+              # curl's default UA. A browser UA is enough to get the bytes.
+              if body=$(curl -fsSL --max-time 20 \
+                  -A "Mozilla/5.0 (compatible; YukiTunnel-CI/1.0)" "$u"); then
                 s=$(printf '%s' "$body" | sha256sum | cut -d' ' -f1)
                 echo "OK    $u  ${s:0:16}"
                 sums+=("$s")
@@ -205,7 +211,18 @@ jobs:
               [ "$s" != "$first" ] && agree=0
             done
             if [ "$agree" = "1" ]; then
-              echo "all reachable mirrors agree"
+              echo "origin mirrors agree"
+              # Advisory CDN comparison: never fails the job.
+              if cdn=$(curl -fsSL --max-time 20 -A "Mozilla/5.0 (compatible; YukiTunnel-CI/1.0)" "$cdn_url" 2>/dev/null); then
+                cdn_sum=$(printf '%s' "$cdn" | sha256sum | cut -d' ' -f1)
+                if [ "$cdn_sum" = "$first" ]; then
+                  echo "CDN matches origin"
+                else
+                  echo "::warning::jsDelivr still serving ${cdn_sum:0:16} (origin ${first:0:16}); it will converge within its TTL"
+                fi
+              else
+                echo "::warning::jsDelivr unreachable"
+              fi
               exit 0
             fi
             if [ "$attempt" -lt 6 ]; then
@@ -213,5 +230,9 @@ jobs:
               sleep 45
             fi
           done
-          echo "::error::mirrors disagree after 6 attempts — a client could pin a stale index"
+          echo "::error::origin mirrors disagree after 6 attempts — a client could pin a stale index"
           exit 1
+
+          # Unreachable: the loop above only exits 0 or 1. The CDN check below
+          # is intentionally advisory so an hours-long jsDelivr cache does not
+          # block a release.
