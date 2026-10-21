@@ -87,7 +87,13 @@ jobs:
           	if err != nil {
           		t.Fatal(err)
           	}
-          	if _, err := VerifyIndex(rawIndex, rawSig, map[string]ed25519.PublicKey{"verifying": pub}); err != nil {
+          	// The trust map is keyed by the key_id embedded in the signature, so
+          	// an invented name here would always report "not trusted".
+          	keyID := os.Getenv("PROFILE_KEY_ID")
+          	if keyID == "" {
+          		keyID = "yuki-profiles-2026"
+          	}
+          	if _, err := VerifyIndex(rawIndex, rawSig, map[string]ed25519.PublicKey{keyID: pub}); err != nil {
           		t.Fatalf("index failed verification: %v", err)
           	}
           }
